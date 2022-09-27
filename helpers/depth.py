@@ -4,6 +4,8 @@ import numpy as np
 import torch
 import torchvision.transforms as T
 
+from numpngw import write_png
+
 from einops import rearrange, repeat
 from PIL import Image
 
