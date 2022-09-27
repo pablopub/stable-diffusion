@@ -152,5 +152,12 @@ class DepthModel():
         denom = max(1e-8, self.depth_max - self.depth_min)
         temp = rearrange((depth - self.depth_min) / denom * 255, 'c h w -> h w c')
         temp = repeat(temp, 'h w 1 -> h w c', c=3)
-        Image.fromarray(temp.astype(np.uint8)).save(filename)    
-
+        png_bit_depth = 8 # 8 will write 8bpc png, 16 will write 16bpc PNG
+        if (png_bit_depth == 8):
+            temp = rearrange((depth - self.depth_min) / denom * 255, 'c h w -> h w c')
+            temp = repeat(temp, 'h w 1 -> h w c', c=3)
+            Image.fromarray(temp.astype(np.uint8)).save(filename)
+        else:
+            temp16 = rearrange((depth - self.depth_min) / denom * 255 * 255, 'c h w -> h w c')
+            temp16 = repeat(temp16, 'h w 1 -> h w c', c=3)
+            write_png(filename, temp16.astype(np.uint16));
