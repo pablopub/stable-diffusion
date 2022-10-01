@@ -152,8 +152,6 @@ class DepthModel():
         self.depth_max = max(self.depth_max, depth.max())
         print(f"  depth min:{depth.min()} max:{depth.max()}")
         denom = max(1e-8, self.depth_max - self.depth_min)
-        temp = rearrange((depth - self.depth_min) / denom * 255, 'c h w -> h w c')
-        temp = repeat(temp, 'h w 1 -> h w c', c=3)
         png_bit_depth = 8 # 8 will write 8bpc png, 16 will write 16bpc PNG
         if (png_bit_depth == 8):
             temp = rearrange((depth - self.depth_min) / denom * 255, 'c h w -> h w c')
